@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5" style="width: 70%;">
+    <div class="col">
+        <h1 class="text-center">User Details</h1>
+        <div class="d-flex justify-content-center">
+            <table class="table table-striped mt-5" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th class="text-center" scope="col">Username</th>
+                        <th class="text-center" scope="col">Email</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ml-5 text-center">{{auctionuser.username}}</td>
+                        <td class="text-center">{{autionuser.email}}</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <a href="{% url 'auction_users' %}" class="d-block btn btn-primary btn-lg my-5">BACK</a>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock  %}
