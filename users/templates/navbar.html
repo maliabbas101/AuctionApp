@@ -5,9 +5,14 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">
-            Cart
+          <a class="nav-link active" aria-current="page" href="{%url 'products'%}">
+            Products
             <span class="badge bg-success text-light">{{ request.session.cart.keys|length }}</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{%url 'product_create'%}">
+            Create Product
           </a>
         </li>
       </ul>

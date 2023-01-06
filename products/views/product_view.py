@@ -10,7 +10,7 @@ from django.core.exceptions import PermissionDenied
 
 class ProductBaseView(View):
     model = Product
-    fields = ['title','description','price','category','photo', 'auctionuser']
+    fields = ['title','description','starting_price','category','photo', 'auctionuser']
     success_url = reverse_lazy('products')
 
 

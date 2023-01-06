@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for product in product_list %}
+    {% for colname in product.column_set.all  %}
+        <p>{{colname}}</p>
+    {% endfor %}
+{% endfor %}
+<div class="container d-flex mt-5" style="width: 70%;">
+    <div class="col">
+        <h1 class="text-center">All Products</h1>
+        <table class="table table-striped mt-5 table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center" scope="col">S#No</th>
+                    <th class="text-center" scope="col">Picture</th>
+                    <th class="text-center" scope="col">Title</th>
+                    <th class="text-center" scope="col">Description</th>
+                    <th class="text-center" scope="col">Category</th>
+                    <th class="text-center" scope="col">Owner</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in product_list %}
+                <tr>
+                    <td class="text-center">{{forloop.counter}}</td>
+                    <td class="text-center"><a href="{%url 'product_detail' product.id%}"><img src="{{product.photo.url}}" alt="" class="rounded-circle"
+                      style="height: 50px"></a></td>
+
+                    <td class="text-center">{{product.title}}</td>
+                    <td class="text-center"><b>{{product.description}}</b></td>
+                    <td class="text-center"><b>{{product.category}}</b></td>
+                    <td class="text-center"><b>{{product.auctionuser}}</b></td>
+
+                <td><a href="{% url 'product_update' product.id %} ">Update</a></td>
+                <td><a href="{% url 'product_delete' product.id %}">Delete</a></td>
+                <td></td>
+                <td></td>
+                </tr>
+                <tr>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock content %}

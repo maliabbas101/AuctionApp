@@ -7,6 +7,10 @@
   Hi {{ user.username }}!
   <p><a href="{% url 'logout' %}">Log Out</a></p>
 {% else %}
-  <p>You are not logged in</p>
+   <div class="text-center">
+     <h3 class="mt-3">Login to View Products and start bidding.</h3>
+     <img src="https://res.cloudinary.com/dllkbvnu7/image/upload/v1673006498/media/auction_frontpage_xlh8ht.png" alt="Image Loading" style="width: 60vw;">
+   </div>
 {% endif %}
+
 {% endblock %}

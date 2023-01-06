@@ -4,7 +4,6 @@ from .category import Category
 from users.models.auction_user import AuctionUser
 
 
-
 class Product(models.Model):
     title = models.CharField(max_length=50, unique=True)
     description = models.CharField(max_length=255)
@@ -16,7 +15,6 @@ class Product(models.Model):
     auctionuser = models.ForeignKey(AuctionUser, on_delete=models.CASCADE)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE)
-
 
     def __str__(self):
         return self.title

@@ -1,1 +1,1 @@
-from .import category, product
+from .import category, product, image
