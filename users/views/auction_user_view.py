@@ -5,12 +5,12 @@ from django.views import View
 # from customers.decorators import required_roles
 from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied
-
+from django.contrib.auth.models import Group
 
 
 class AuctionUserBaseView(View):
     model = AuctionUser
-    fields = '__all__'
+    fields = ["username","email","first_name","last_name",]
     success_url = reverse_lazy('auction_users')
 
 

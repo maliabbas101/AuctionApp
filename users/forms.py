@@ -10,7 +10,7 @@ class AuctionUserCreationForm(UserCreationForm):
 
     class Meta:
         model = AuctionUser
-        fields = ("username", "email","groups")
+        fields = ("username", "email","groups","first_name","last_name")
 
 class AuctionUserChangeForm(UserChangeForm):
 
