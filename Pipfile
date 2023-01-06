@@ -9,6 +9,8 @@ psycopg2 = "*"
 django-environ = "*"
 crispy-bootstrap5 = "*"
 django-crispy-forms = "*"
+cloudinary = "*"
+django-cloudinary-storage = "*"
 
 [dev-packages]
 
