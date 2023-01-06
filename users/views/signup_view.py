@@ -7,3 +7,5 @@ class SignUpView(CreateView):
     form_class = AuctionUserCreationForm
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
+
+    

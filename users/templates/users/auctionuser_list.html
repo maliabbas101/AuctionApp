@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for auctionuser in auctionuser_list %}
+    {% for colname in auctionuser.column_set.all  %}
+        <p>{{colname}}</p>
+    {% endfor %}
+{% endfor %}
+
+
+<div class="container d-flex mt-5" style="width: 70%;">
+    <div class="col">
+        <h1 class="text-center">All Users</h1>
+        <table class="table table-striped mt-5 table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center" scope="col">S#No</th>
+                    <th class="text-center" scope="col">Username</th>
+                    <th class="text-center" scope="col">Email</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for auctionuser in auctionuser_list %}
+
+                <tr>
+                    <td class="text-center">{{forloop.counter}}</td>
+                    <td class="text-center">{{auctionuser.username}}</td>
+                    <td class="text-center"><b>{{auctionuser.email}}</b></td>
+
+                <td><a href="{% url 'auction_user_update' auctionuser.id %} ">Update</a></td>
+                <td><a href="{% url 'auction_user_delete' auctionuser.id %}">Delete</a></td>
+                <td></td>
+                <td></td>
+
+                </tr>
+
+                <tr>
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock content %}

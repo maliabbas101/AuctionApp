@@ -10,28 +10,13 @@ from django.core.exceptions import PermissionDenied
 
 class AuctionUserBaseView(View):
     model = AuctionUser
-    fields = ['title','description','price','categories','restaurant','photo','retired']
+    fields = '__all__'
     success_url = reverse_lazy('auction_users')
 
 
 class AuctionUserListView(AuctionUserBaseView, ListView):
     """
     """
-
-
-class AuctionUserDetailView(AuctionUserBaseView, DetailView):
-    """
-    """
-
-
-
-# @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
-class AuctionUserCreateView(AuctionUserBaseView, CreateView):
-    """
-    """
-
-
-
 
 # @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class AuctionUserUpdateView(AuctionUserBaseView, UpdateView):
