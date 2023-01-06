@@ -14,21 +14,21 @@
       <ul class="navbar-nav d-flex">
         {% if request.user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Orders</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'auction_users' %}">All Users</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Logout</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" aria-current="page" href="/">{{ request.user.email }}</a>
           </li>
         {% else %}
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Signup</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'signup' %}">Signup</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Login</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Login</a>
           </li>
         {% endif %}
       </ul>
