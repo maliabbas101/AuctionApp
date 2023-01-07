@@ -4,34 +4,28 @@
 
 <div class="container mt-5" style="width: 70%;">
     <div class="col">
-        <h1 class="text-center">Product Details</h1>
-        <div class="d-flex justify-content-center">
+        <h1 class="text-center">More About the Product</h1>
+        <div class="d-flex justify-content-center mt-5">
             <div>
                 <img src="{{product.photo.url}}" alt="" class="rounded-circle" style="height: 25vw;"alt="">
             </div>
-            <table class="table table-striped mt-5" style="width: 100%">
-                <thead>
-                    <tr>
-                        <th class="text-center" scope="col">Title</th>
-                        <th class="text-center" scope="col">Description</th>
-                        <th class="text-center" scope="col">Starting Price</th>
-                        <th class="text-center" scope="col">Category</th>
-                        <th class="text-center" scope="col">Owner</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="ml-5 text-center">{{product.title}}</td>
-                        <td class="text-center">{{product.description}}</td>
-                        <td class="text-center">{{product.starting_price}}</td>
-                        <td class="text-center">{{product.category}}</td>
-                        <td class="text-center">{{product.auctionuser}}</td>
-                    </tr>
-                </tbody>
-            </table>
+
+
+            <div class="card" >
+                <div class="card-header">
+                  <h2>{{product.title}}</h2>
+                </div>
+                <div class="card-body">
+
+                  <h3 class="card-title">Owner: {{product.auctionuser}}</h3>
+                  <h3><strong>Starting Price: {{product.starting_price}}</strong></h3>
+                  <h3 class="card-text">Summary:{{product.description}}
+                  </h3>
+                  <a href="{% url 'products' %}" class="btn btn-success btn-sm my-5">BACK</a>
+                </div>
+              </div>
         </div>
         <div class="d-flex justify-content-center">
-            <a href="{% url 'products' %}" class="d-block btn btn-primary btn-lg my-5">BACK</a>
 
         </div>
     </div>

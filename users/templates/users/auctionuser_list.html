@@ -28,8 +28,6 @@
                     <td class="text-center">{{forloop.counter}}</td>
                     <td class="text-center">{{auctionuser.username}}</td>
                     <td class="text-center"><b>{{auctionuser.email}}</b></td>
-
-                <td><a href="{% url 'auction_user_update' auctionuser.id %} ">Update</a></td>
                 <td><a href="{% url 'auction_user_delete' auctionuser.id %}">Delete</a></td>
                 <td></td>
                 <td></td>
