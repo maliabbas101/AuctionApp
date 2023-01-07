@@ -13,3 +13,7 @@ class AuctionUser(AbstractUser):
 
     def register(self):
         self.save()
+
+    @staticmethod
+    def get_auction_user_by_id(id):
+        return AuctionUser.objects.filter(id=id)

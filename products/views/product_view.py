@@ -5,8 +5,7 @@ from django.views import View
 # from customers.decorators import required_roles
 from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied
-
-
+from django import forms
 
 class ProductBaseView(View):
     model = Product
@@ -30,6 +29,13 @@ class ProductDetailView(ProductBaseView, DetailView):
 # @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class ProductCreateView(ProductBaseView, CreateView):
     """View to create a new product"""
+
+    def get_form(self):
+        form = super().get_form()
+        form.fields['photo'].widget = forms.FileInput(attrs={'multiple': 'true', 'accept': 'image/*'})
+        return form
+
+
 
 
 

@@ -10,3 +10,7 @@ class Category(models.Model):
     @staticmethod
     def get_all_categories():
         return Category.objects.all()
+
+    @staticmethod
+    def get_category_by_id(id):
+        return Category.objects.filter(id=id)
