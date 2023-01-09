@@ -2,9 +2,10 @@ from . import views
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from . import views
-
+from products.views.index_view import IndexView
 
 urlpatterns = [
+    path('', IndexView.as_view(), name='home'),
     path('products', views.product_view.ProductListView.as_view(),
          name='products'),
     path('products/<int:pk>/detail',

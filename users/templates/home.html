@@ -4,8 +4,44 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <p><a href="{% url 'logout' %}">Log Out</a></p>
+
+  <div class="container-fluid mt-3">
+    <div class="row">
+      <div class="col-lg-2">
+        <h3>Categories</h3>
+        <ul class="list-group">
+          <a class="list-group-item list-group-item-action" href="/">All Items</a>
+          {% if categories %} {% for category in categories %}
+          <a
+            class="list-group-item list-group-item-action"
+            href="/?category={{category.id}}"
+            >{{category.name}}</a
+          >
+          {% endfor %} {% endif %}
+        </ul>
+      </div>
+      <div id="products" class="col-lg-8">
+        <h3 class="text-center">
+          Hi {{ user.username }}!
+        </h3>
+        <div class="row mx-auto mt-3">
+         {% for product in products %}
+           <div class="card mx-auto mb-3" id="{{ product.id }}" style="width: 18rem">
+             <a href="{% url 'product_detail' product.id %}"><img src="{{ product.photo.url }}" class="card-img-top" alt="" /></a>
+             <div class="card-body">
+               <h5 class="card-title">{{ product.title }}</h5>
+               <p class="card-text">
+                 {{ product.description }}
+                 <b>Starting Bid:{{ product.starting_price }}</b>
+               </p>
+               <p>Created by: <strong>{{ product.auctionuser }}</strong></p>
+             </div>
+           </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
 {% else %}
    <div class="text-center">
      <h3 class="mt-3">Login to View Products and start bidding.</h3>
@@ -14,3 +50,6 @@
 {% endif %}
 
 {% endblock %}
+
+
+

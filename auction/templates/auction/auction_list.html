@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+{% for auction in auction_list %}
+    {% for colname in auction.column_set.all  %}
+        <p>{{colname}}</p>
+    {% endfor %}
+{% endfor %}
+<div class="container d-flex mt-5" style="width: 70%;">
+    <div class="col">
+        <h1 class="text-center">All Auctions</h1>
+        <table class="table table-striped mt-5 table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center" scope="col">S#No</th>
+                    <th class="text-center" scope="col">Picture</th>
+                    <th class="text-center" scope="col">Title</th>
+                    <th class="text-center" scope="col">Category</th>
+                    <th class="text-center" scope="col">Owner</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for auction in auction_list %}
+                <tr>
+                    <td class="text-center">{{forloop.counter}}</td>
+                    <td class="text-center"><a href="{%url 'auction_detail' auction.id%}"><img src="{{auction.product.photo.url}}" alt="" class="rounded-circle"
+                      style="height: 50px"></a></td>
+
+                    <td class="text-center">{{auction.product.title}}</td>
+                    <td class="text-center"><b>{{auction.product.category}}</b></td>
+                    <td class="text-center"><b>{{auction.product.auctionuser}}</b></td>
+                <td><a href="{% url 'auction_delete' auction.id %}">Delete</a></td>
+                <td></td>
+                <td></td>
+                </tr>
+                <tr>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock content %}
