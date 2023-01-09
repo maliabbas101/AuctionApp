@@ -5,6 +5,18 @@ from users.models.auction_user import AuctionUser
 
 
 class Product(models.Model):
+    STATUS_DELIVERED = "SD"
+    STATUS_SOLD = "SS"
+    STATUS_PENDING = "PN"
+
+    STATUS_CHOICES = [
+
+        (STATUS_DELIVERED, "Delivered"),
+        (STATUS_SOLD, "Sold"),
+        (STATUS_PENDING, "Pending"),
+    ]
+
+
     title = models.CharField(max_length=50, unique=True)
     description = models.CharField(max_length=255)
     starting_price = models.IntegerField(default=0, validators=[
@@ -15,6 +27,9 @@ class Product(models.Model):
     auctionuser = models.ForeignKey(AuctionUser, on_delete=models.CASCADE)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE)
+
+    status = models.CharField(
+    max_length=2, choices=STATUS_CHOICES, default=STATUS_PENDING)
 
     def __str__(self):
         return self.title
