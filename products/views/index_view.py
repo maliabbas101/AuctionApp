@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from products.models.product import Product
+from auction.models.auction import Auction
 from products.models.category import Category
 from django.views import View
 from django.contrib import messages
@@ -9,15 +9,16 @@ class IndexView(View):
     def get(self, request):
         category_id = request.GET.get('category')
         if category_id:
-            products = Product.get_products_by_category(category_id)
+            auctions = Auction.get_auctions_by_category(category_id)
         else:
-            products = Product.get_all_products()
+            auctions = Auction.get_all_auctions()
 
         categories = Category.get_all_categories()
         context = {
-            'products': products,
+            'auctions': auctions,
             'categories': categories,
         }
         return render(request, 'home.html', context)
+
 
 

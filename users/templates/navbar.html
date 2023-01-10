@@ -15,6 +15,11 @@
             Create Product
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{%url 'auction_create'%}">
+            Create Auction
+          </a>
+        </li>
       </ul>
       <ul class="navbar-nav d-flex">
         {% if request.user.is_authenticated %}
@@ -27,6 +32,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" aria-current="page" href="/">{{ request.user.email }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" aria-current="page" href="/">{{ request.user.groups.first }}</a>
           </li>
         {% else %}
           <li class="nav-item">

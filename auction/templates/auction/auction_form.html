@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+<script>
+    $("#id_end_time").change(function() {
+      var startDate = document.getElementById("id_start_time").value;
+      var endDate = document.getElementById("id_end_time").value;
+      if ((Date.parse(endDate) <= Date.parse(startDate))) {
+        alert("End date should be greater than Start date");
+        document.getElementById("id_end_time").value = "";
+      }
+    });
+</script>
 {% load crispy_forms_filters %} {% load crispy_forms_tags %}
 
 <div class="container d-flex justify-content-center mt-5" style="width: 25%;">
@@ -13,7 +23,7 @@
             </table>
             <div class="container d-flex justify-content-center" style="width: 10%;">
                 <input type="submit" class="btn btn-primary btn-sm" value="Submit" style="margin-right: 30px; margin-top: 30px;">
-                <input type="submit" class="btn btn-danger btn-sm" style="margin-top: 30px;" onclick="window.location='{% url 'auctions' %}'; return false;" value="Cancel">
+                <input type="submit" class="btn btn-danger btn-sm" style="margin-top: 30px;" onclick="window.location='{% url 'home' %}'; return false;" value="Cancel">
             </div>
         </form>
     </div>

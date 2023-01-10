@@ -6,6 +6,7 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied
 from django import forms
+from django.contrib import messages
 
 class ProductBaseView(View):
     model = Product
@@ -35,6 +36,10 @@ class ProductCreateView(ProductBaseView, CreateView):
         form.fields['photo'].widget = forms.FileInput(attrs={'multiple': 'true', 'accept': 'image/*'})
         return form
 
+    def post(self, request, *args, **kwargs):
+        messages.success(request, "Product created successfully.")
+        return super().post(request, *args, **kwargs)
+
 
 
 
@@ -53,6 +58,10 @@ class ProductUpdateView(ProductBaseView, UpdateView):
 # @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class ProductDeleteView(ProductBaseView, DeleteView):
     """View to delete a Product"""
+
+    def post(self, request, *args, **kwargs):
+        messages.error(request, "Product deleted successfully.")
+        return super().post(request, *args, **kwargs)
     # def dispatch(self, request, *args, **kwargs):
     #     obj = self.get_object()
     #     if request.user.email != obj.restaurant.owner.email:

@@ -5,6 +5,7 @@ from django.views import View
 # from customers.decorators import required_roles
 from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied
+from django.contrib import messages
 
 
 class AuctionUserBaseView(View):
@@ -21,6 +22,10 @@ class AuctionUserListView(AuctionUserBaseView, ListView):
 # @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class AuctionUserDeleteView(AuctionUserBaseView, DeleteView):
     """"""
+
+    def post(self, request, *args, **kwargs):
+        messages.error(request, "User deleted successfully.")
+        return super().post(request, *args, **kwargs)
     # def dispatch(self, request, *args, **kwargs):
     #     obj = self.get_object()
     #     if request.user.email != obj.restaurant.owner.email:
