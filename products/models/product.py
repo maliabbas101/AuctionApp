@@ -19,8 +19,8 @@ class Product(models.Model):
 
     title = models.CharField(max_length=50, unique=True)
     description = models.CharField(max_length=255)
-    starting_price = models.IntegerField(default=0, validators=[
-        MinValueValidator(1)
+    starting_price = models.FloatField(default=0.0, validators=[
+        MinValueValidator(1.0)
     ])
     photo = models.ImageField(upload_to='media/products/',
                               default='media/prod_c8m26c.png')
@@ -35,8 +35,9 @@ class Product(models.Model):
         return self.title
 
     def increase_starting_price(self, number):
-        self.starting_price += number
-        return self
+        self.starting_price = float(number)
+        self.save()
+
 
     @staticmethod
     def get_all_products():
@@ -56,3 +57,5 @@ class Product(models.Model):
             return Product.objects.filter(category_id=category_id)
         else:
             return Product.get_all_items()
+
+

@@ -30,9 +30,7 @@ def is_seller(string):
         return True
     return False
 
-@register.filter('duration')
-def duration(end_time):
-    time_change = datetime.timedelta(minutes=300)
-    timenow = datetime.datetime.now()+time_change
-    return end_time-timenow
+@register.filter('new_bid_amount')
+def new_bid_amount(bid_amount):
+    return bid_amount + (20 * bid_amount/100)
 

@@ -20,6 +20,10 @@ class Auction(models.Model):
     def get_all_auctions():
         return Auction.objects.all()
 
+    @staticmethod
+    def get_auction_by_id(id):
+        return Auction.objects.filter(id=id)
+
 
     def get_auctions_by_category(category_id):
       if (category_id):

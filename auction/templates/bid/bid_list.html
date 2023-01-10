@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+  {% for bid in bid_list %}
+    {% for colname in bid.column_set.all %}
+      <p>{{ colname }}</p>
+    {% endfor %}
+  {% endfor %}
+  <div class="container d-flex mt-5" style="width: 70%;">
+    <div class="col">
+      <h1 class="text-center">All Bids</h1>
+      <table class="table table-striped mt-5 table-hover">
+        <thead>
+          <tr>
+            <th class="text-center" scope="col">S#No</th>
+            <th class="text-center" scope="col">Bidder</th>
+            <th class="text-center" scope="col">Product</th>
+            <th class="text-center" scope="col">Bid Amount</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for bid in bid_list %}
+            <tr>
+              <td class="text-center">{{ forloop.counter }}</td>
+              <td class="text-center">{{ bid.auctionuser.username }}</td>
+              <td class="text-center">
+                <b>{{ bid.product.name }}</b>
+              </td>
+              <td class="text-center">
+                <b>{{ bid.bid_amount }}</b>
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

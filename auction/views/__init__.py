@@ -1,1 +1,1 @@
-from . import auction_view
+from . import auction_view, bid_view

@@ -154,6 +154,9 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': env('API_SECRET'),
 
 }
-
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 USE_TZ = False
