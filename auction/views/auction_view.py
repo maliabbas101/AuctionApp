@@ -65,7 +65,20 @@ class AuctionDeleteView(AuctionBaseView, DeleteView):
         messages.error(request, "Auction deleted successfully.")
         return super().post(request, *args, **kwargs)
 
-    #     obj = self.get_object()
-    #     if request.user.email != obj.restaurant.owner.email:
-    #         raise PermissionDenied
-    #     return super(ItemDeleteView, self).dispatch(request, *args, **kwargs)
+
+
+def approval_auction(request, pk):
+    auction = Auction.objects.get(pk=pk)
+    auction.status = 'SA'
+    auction.save()
+    messages.success(request, "Auction has been approved and listed to buyers.")
+    return redirect('auctions')
+
+def decline_auction(request, pk):
+    auction = Auction.objects.get(pk=pk)
+    auction_product = Product.get_product_by_id(auction.product.id).first()
+    auction_product.starting_price = 1.0
+    auction_product.save()
+    auction.delete()
+    messages.error(request, "Auction has been declined and deleted.")
+    return redirect('auctions')

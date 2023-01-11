@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load tags %}
 {% for auctionuser in auctionuser_list %}
     {% for colname in auctionuser.column_set.all  %}
         <p>{{colname}}</p>
@@ -29,7 +30,18 @@
                     <td class="text-center">{{auctionuser.username}}</td>
                     <td class="text-center"><b>{{auctionuser.email}}</b></td>
                 <td><a href="{% url 'auction_user_delete' auctionuser.id %}">Delete</a></td>
+
+
+                {% if request.user.groups.first|is_admin %}
+
+                {% if auctionuser.groups.first|is_admin %}
                 <td></td>
+                {% else %}
+                <td><a href="{% url 'make_admin' auctionuser.id %}"><button class="btn btn-success btn-sm">Make Admin</button></a></td>
+                {% endif %}
+                {% endif %}
+
+
                 <td></td>
 
                 </tr>

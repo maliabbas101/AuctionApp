@@ -1,7 +1,8 @@
 const eventBox = document.getElementById('event-box')
 const countdownBox = document.getElementById('countdown-box')
 const eventDate = Date.parse(eventBox.textContent)
-
+const bidForm = document.getElementById('bid-form')
+const winnerText = document.getElementById('winner-text')
 setInterval(() => {
 
   const now = new Date().getTime()
@@ -14,15 +15,11 @@ setInterval(() => {
   const s = Math.floor((eventDate / (1000) - (now / (1000))) % 60)
   if (diff > 0) {
     countdownBox.innerHTML = `<h4>${d + " days, " + h + " hours, " + m + " minutes, " + s + " seconds"}</h4>`
+    winnerText.innerHTML = ""
 
   } else {
     countdownBox.innerHTML = `<h4>Auction Expired.</h4>`
+    bidForm.innerHTML = ""
+
   }
 }, 1000)
-
-// const bidAmount = document.getElementById('bid-amount')
-// console.log(bidAmount.value)
-$("#bid-amount").change(function () {
-  var startPrice = document.getElementById("bid-amount").value;
-
-});

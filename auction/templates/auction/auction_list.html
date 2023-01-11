@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load tags %}
 {% block content %}
 {% for auction in auction_list %}
     {% for colname in auction.column_set.all  %}
@@ -16,23 +17,38 @@
                     <th class="text-center" scope="col">Title</th>
                     <th class="text-center" scope="col">Category</th>
                     <th class="text-center" scope="col">Owner</th>
-                    <th></th>
-                    <th></th>
+                    <th class="text-center" scope="col">Status</th>
+                    <th class="text-center" scope="col"></th>
+                    <th class="text-center" scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 {% for auction in auction_list %}
                 <tr>
                     <td class="text-center">{{forloop.counter}}</td>
-                    <td class="text-center"><a href="{%url 'auction_detail' auction.id%}"><img src="{{auction.product.photo.url}}" alt="" class="rounded-circle"
+
+                    {% if request.user.groups.first|is_buyer %}
+                    <td class="text-center"><a href="{%url 'auction_detail' auction.id   %}"><img src="{{auction.product.photo.url}}" alt="" class="rounded-circle"
                       style="height: 50px"></a></td>
+                    {% elif request.user.groups.first|is_admin %}
+                    <td class="text-center"><img src="{{auction.product.photo.url}}" alt="" class="rounded-circle"
+                        style="height: 50px"></td>
+                    {% endif %}
+
 
                     <td class="text-center">{{auction.product.title}}</td>
                     <td class="text-center"><b>{{auction.product.category}}</b></td>
                     <td class="text-center"><b>{{auction.product.auctionuser}}</b></td>
+                    <td class="text-center"><b>{{auction.get_status_display}}</b></td>
                 <td><a href="{% url 'auction_delete' auction.id %}">Delete</a></td>
+
+                {% if auction.status|is_pending %}
+                <td><a href="{% url 'auction_approve' auction.pk %}"><button class="btn btn-success btn-sm">Approve</button></a></td>
+                <td><a href="{% url 'auction_decline' auction.pk %}"><button class="btn btn-danger btn-sm">Decline</button></a></td>
+                {% else %}
                 <td></td>
                 <td></td>
+                {% endif %}
                 </tr>
                 <tr>
                 </tr>

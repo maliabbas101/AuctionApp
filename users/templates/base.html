@@ -38,9 +38,12 @@
   </script>
   <script>
     const alerts=document.getElementById('messages')
+    if (alerts)
+    {
     setTimeout(()=>{
       alerts.innerHTML=""
     },1500);
+  }
   </script>
   </body>
 </html>

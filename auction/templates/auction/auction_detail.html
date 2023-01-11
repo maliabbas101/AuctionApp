@@ -32,33 +32,39 @@
               <h5>Starting Price: {{auction.product.starting_price}} $</h5>
               <h5 class="card-text"> Description:</h5><p>{{auction.product.description}}</p>
               <a href="{% url 'home' %}" class="btn btn-outline-danger my-5 rounded-pill p-3">Back</a>
-              <form action="" method="POST" class="btn-block">
-                {% csrf_token %}
-                <input hidden type="text" name="auction" value="{{auction.id}}" />
-                <input hidden type="text" name="user" value="{{request.user.id}}" />
-                <div class="form-group mt-3 mb-3">
-                  <ul>
-                    <li>
-                      <p>Enter your amount or press the bid button to place a bid automatically of 20% higher than current bid</p>
-                    </li>
-                  </ul>
-                  <label for="bid-amount">Bid Amount</label>
+              <div id="bid-form">
+                <form action="" method="POST" class="btn-block">
+                  {% csrf_token %}
+                  <input hidden type="text" name="auction" value="{{auction.id}}" />
+                  <input hidden type="text" name="user" value="{{request.user.id}}" />
+                  <div class="form-group mt-3 mb-3">
+                    <ul>
+                      <li>
+                        <p>Enter your amount or press the bid button to place a bid automatically of 20% higher than current bid</p>
+                      </li>
+                    </ul>
+                    <label for="bid-amount">Bid Amount</label>
+                    <input
+                      id="bid-amount"
+                      class="form-control"
+                      type="number"
+                      name="bid_amount"
+                      value={{auction.product.starting_price|new_bid_amount}}
+                      min="{{auction.product.starting_price|new_bid_amount}}"
+                      step="0.2"
+                    />
+                  </div>
                   <input
-                    id="bid-amount"
-                    class="form-control"
-                    type="number"
-                    name="bid_amount"
-                    value={{auction.product.starting_price|new_bid_amount}}
-                    min="{{auction.product.starting_price|new_bid_amount}}"
-                    step="0.2"
+                    type="submit"
+                    id="bid-button"
+                    class="float-right btn btn-outline-success rounded-pill p-3"
+                    value="Bid"
                   />
-                </div>
-                <input
-                  type="submit"
-                  class="float-right btn btn-outline-success rounded-pill p-3"
-                  value="Bid"
-                />
-              </form>
+                </form>
+              </div>
+              <div id="winner-text">
+                Winner is: {{auction.product.auctionuser}}
+              </div>
             </div>
           </div>
         </div>
@@ -66,5 +72,4 @@
         </div>
     </div>
 </div>
-
 {% endblock  %}

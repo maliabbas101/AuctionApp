@@ -6,7 +6,7 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
-
+from django.shortcuts import redirect
 
 class AuctionUserBaseView(View):
     model = AuctionUser
@@ -31,3 +31,11 @@ class AuctionUserDeleteView(AuctionUserBaseView, DeleteView):
     #     if request.user.email != obj.restaurant.owner.email:
     #         raise PermissionDenied
     #     return super(ItemDeleteView, self).dispatch(request, *args, **kwargs)
+
+def make_admin(request, pk):
+    auction_user = AuctionUser.objects.get(pk=pk)
+    auction_user.groups.clear()
+    auction_user.groups.set('1')
+    auction_user.save()
+    messages.error(request, "Admin added successfully")
+    return redirect('auction_users')

@@ -11,3 +11,15 @@ class Bid(models.Model):
 
     def get_absolute_url(self):
         return reverse('auction_detail', kwargs={'pk': self.auction.pk})
+
+    @staticmethod
+    def get_auction_winner(id):
+        bids = Bid.objects.filter(auction__id=id)
+        max_bid = 0
+        for bid in bids:
+            if bid.bid_amount > max_bid:
+                max_bid=bid.bid_amount
+                winner = bid.auctionuser
+        return max_bid, winner
+
+

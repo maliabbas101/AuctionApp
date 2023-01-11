@@ -1,15 +1,20 @@
+{% load tags %}
 <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">AuctionApp</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        {% if request.user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{%url 'products'%}">
             Products
             <span class="badge bg-success text-light">{{ request.session.cart.keys|length }}</span>
           </a>
         </li>
+
+        {% if request.user.groups.first|is_seller %}
+
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{%url 'product_create'%}">
             Create Product
@@ -20,9 +25,15 @@
             Create Auction
           </a>
         </li>
+        {% endif %}
+
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{%url 'auctions'%}">
+            List of Auctions
+          </a>
+        </li>
       </ul>
       <ul class="navbar-nav d-flex">
-        {% if request.user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'auction_users' %}">All Users</a>
           </li>

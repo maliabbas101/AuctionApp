@@ -7,5 +7,7 @@ urlpatterns = [
     path('signup/', SignUpView.as_view(), name="signup"),
     path('<int:pk>/delete/',
          views.auction_user_view.AuctionUserDeleteView.as_view(), name='auction_user_delete'),
+     path('<int:pk>/makeadmin/',
+     views.auction_user_view.make_admin,name='make_admin'),
 ]
 
