@@ -5,13 +5,18 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        {% if request.user.is_authenticated %}
+        {% if request.user.is_authenticated%}
+
+        {% if request.user.groups.first|is_admin or request.user.groups.first|is_seller %}
+
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{%url 'products'%}">
             Products
             <span class="badge bg-success text-light">{{ request.session.cart.keys|length }}</span>
           </a>
         </li>
+        {% endif %}
+
 
         {% if request.user.groups.first|is_seller %}
 
@@ -27,17 +32,20 @@
         </li>
         {% endif %}
 
+        {% if request.user.groups.first|is_admin %}
+
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{%url 'auctions'%}">
-            List of Auctions
+            Auctions
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'auction_users' %}">Users</a>
+        </li>
+        {% endif %}
+
       </ul>
       <ul class="navbar-nav d-flex">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'auction_users' %}">All Users</a>
-          </li>
-
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Logout</a>
           </li>

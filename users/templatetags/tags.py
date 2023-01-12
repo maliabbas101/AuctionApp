@@ -20,6 +20,12 @@ def is_seller(string):
         return True
     return False
 
+@register.filter('is_owner')
+def is_owner(string1, string2):
+    if str(string1) == str(string2):
+        return True
+    return False
+
 @register.filter('is_pending')
 def is_pending(string):
     if str(string) == 'SP':

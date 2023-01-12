@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load tags %}
 {% block content %}
 {% for product in product_list %}
     {% for colname in product.column_set.all  %}
@@ -22,19 +23,26 @@
             </thead>
             <tbody>
                 {% for product in product_list %}
+
+                {% if request.user.groups.first|is_admin or request.user.email|is_owner:product.auctionuser.email %}
                 <tr>
                     <td class="text-center">{{forloop.counter}}</td>
-                    <td class="text-center"><a href="{%url 'product_detail' product.id%}"><img src="{{product.photo.url}}" alt="" class="rounded-circle"
-                      style="height: 50px"></a></td>
+                    <td class="text-center"><img src="{{product.photo.url}}" alt="" class="rounded-circle"
+                      style="height: 50px"></td>
 
                     <td class="text-center">{{product.title}}</td>
                     <td class="text-center"><b>{{product.category}}</b></td>
                     <td class="text-center"><b>{{product.auctionuser}}</b></td>
 
+                {% if request.user.groups.first|is_seller %}
+
                 <td><a href="{% url 'product_update' product.id %} ">Update</a></td>
+                {% endif %}
+
                 <td><a href="{% url 'product_delete' product.id %}">Delete</a></td>
                 <td></td>
                 <td></td>
+                {% endif %}
                 </tr>
                 <tr>
                 </tr>

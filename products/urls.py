@@ -8,8 +8,6 @@ urlpatterns = [
     path('', IndexView.as_view(), name='home'),
     path('products', views.product_view.ProductListView.as_view(),
          name='products'),
-    path('products/<int:pk>/detail',
-         views.product_view.ProductDetailView.as_view(), name='product_detail'),
     path('products/create/', views.product_view.ProductCreateView.as_view(),
          name='product_create'),
     path('products/<int:pk>/update/',

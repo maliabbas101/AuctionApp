@@ -15,6 +15,8 @@ urlpatterns = [
     path('<int:pk>/decline/',
          views.auction_view.decline_auction, name='auction_decline'),
 
+    path('<int:pk>/bids/',
+         views.bid_view.BidListView.as_view(), name='bids'),
 ]
 
 

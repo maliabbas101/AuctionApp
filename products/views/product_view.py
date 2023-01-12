@@ -7,27 +7,19 @@ from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied
 from django import forms
 from django.contrib import messages
+from AuctApp.decorators import required_roles
 
 class ProductBaseView(View):
     model = Product
     fields = ['title','description','starting_price','category','photo', 'auctionuser']
     success_url = reverse_lazy('products')
 
-
+@method_decorator(required_roles(allowed_roles=['admin', 'seller']), name='dispatch')
 class ProductListView(ProductBaseView, ListView):
     """
     """
 
-
-class ProductDetailView(ProductBaseView, DetailView):
-    """View to list the details from one product.
-    Use the 'Product' variable in the template to access
-    the specific Product here and in the Views below"""
-    # model = Item
-    # template_name = 'Items.html'
-
-
-# @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
+@method_decorator(required_roles(allowed_roles=['seller']), name='dispatch')
 class ProductCreateView(ProductBaseView, CreateView):
     """View to create a new product"""
 
@@ -45,25 +37,27 @@ class ProductCreateView(ProductBaseView, CreateView):
 
 
 
-# @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
+@method_decorator(required_roles(allowed_roles=['seller']), name='dispatch')
 class ProductUpdateView(ProductBaseView, UpdateView):
     """View to update a product"""
-    # def dispatch(self, request, *args, **kwargs):
-    #     obj = self.get_object()
-    #     if request.user.email != obj.restaurant.owner.email:
-    #         raise PermissionDenied
-    #     return super(ItemUpdateView, self).dispatch(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if request.user.email != obj.auctionuser.email:
+            raise PermissionDenied
+        return super(ProductUpdateView, self).dispatch(request, *args, **kwargs)
 
 
-# @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
+@method_decorator(required_roles(allowed_roles=['admin','seller']), name='dispatch')
 class ProductDeleteView(ProductBaseView, DeleteView):
     """View to delete a Product"""
 
     def post(self, request, *args, **kwargs):
         messages.error(request, "Product deleted successfully.")
         return super().post(request, *args, **kwargs)
-    # def dispatch(self, request, *args, **kwargs):
-    #     obj = self.get_object()
-    #     if request.user.email != obj.restaurant.owner.email:
-    #         raise PermissionDenied
-    #     return super(ItemDeleteView, self).dispatch(request, *args, **kwargs)
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        group = request.user.groups.first()
+        if request.user.email != obj.auctionuser.email and str(group) !='admin':
+            raise PermissionDenied
+        return super(ProductDeleteView, self).dispatch(request, *args, **kwargs)

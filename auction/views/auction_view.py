@@ -4,28 +4,27 @@ from ..models.auction import Auction
 from ..models.bid import Bid
 from django.urls import reverse_lazy
 from django.views import View
-# from customers.decorators import required_roles
 from django.utils.decorators import method_decorator
-from django.core.exceptions import PermissionDenied
 from django import forms
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from users.models.auction_user import AuctionUser
 from products.models.product import Product
+from AuctApp.decorators import required_roles
+from django.core.exceptions import PermissionDenied
 class AuctionBaseView(View):
     model = Auction
     fields = ['product', 'start_time', 'end_time']
     success_url = reverse_lazy('auctions')
 
-
+@method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class AuctionListView(AuctionBaseView, ListView):
     """
     """
 
-
+@method_decorator(required_roles(allowed_roles=['buyer','seller']), name='dispatch')
 class AuctionDetailView(AuctionBaseView, DetailView):
     """"""
-
     def post(self, request, *args, **kwargs):
         print(request.POST)
         user_id = request.POST.get('user')
@@ -43,7 +42,15 @@ class AuctionDetailView(AuctionBaseView, DetailView):
         messages.success(request, "Bid placed successfully.")
         return HttpResponseRedirect(self.request.path_info)
 
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        group=request.user.groups.first()
+        if request.user.email != obj.product.auctionuser.email and str(group) !='buyer':
+            raise PermissionDenied
+        return super(AuctionDetailView, self).dispatch(request, *args, **kwargs)
 # @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
+
+@method_decorator(required_roles(allowed_roles=['seller']), name='dispatch')
 class AuctionCreateView(AuctionBaseView, CreateView):
     """"""
     def get_form(self):
@@ -58,7 +65,7 @@ class AuctionCreateView(AuctionBaseView, CreateView):
 
 
 
-# @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
+@method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class AuctionDeleteView(AuctionBaseView, DeleteView):
     """"""
     def post(self, request, *args, **kwargs):
@@ -66,7 +73,7 @@ class AuctionDeleteView(AuctionBaseView, DeleteView):
         return super().post(request, *args, **kwargs)
 
 
-
+required_roles(allowed_roles=['admin'])
 def approval_auction(request, pk):
     auction = Auction.objects.get(pk=pk)
     auction.status = 'SA'
@@ -74,6 +81,7 @@ def approval_auction(request, pk):
     messages.success(request, "Auction has been approved and listed to buyers.")
     return redirect('auctions')
 
+required_roles(allowed_roles=['admin'])
 def decline_auction(request, pk):
     auction = Auction.objects.get(pk=pk)
     auction_product = Product.get_product_by_id(auction.product.id).first()
