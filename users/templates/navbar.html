@@ -7,6 +7,17 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         {% if request.user.is_authenticated%}
 
+
+        {% if request.user.groups.first|is_buyer %}
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{%url 'purchased_products'%}">
+             Purchased Products
+            <span class="badge bg-success text-light">{{ request.session.cart.keys|length }}</span>
+          </a>
+        </li>
+        {% endif %}
+
+
         {% if request.user.groups.first|is_admin or request.user.groups.first|is_seller %}
 
         <li class="nav-item">

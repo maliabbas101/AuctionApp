@@ -61,3 +61,10 @@ class ProductDeleteView(ProductBaseView, DeleteView):
         if request.user.email != obj.auctionuser.email and str(group) !='admin':
             raise PermissionDenied
         return super(ProductDeleteView, self).dispatch(request, *args, **kwargs)
+
+
+
+class PurchasedProductView(View):
+    def get(self,request):
+        # If request.user is owner of any product we need to get those products we need to pass these to context and ultimately render it on our template
+        pass

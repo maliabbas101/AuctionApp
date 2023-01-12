@@ -32,6 +32,12 @@ def is_pending(string):
         return True
     return False
 
+@register.filter('is_expired')
+def is_expired(string):
+    if str(string) == 'SE':
+        return True
+    return False
+
 @register.filter('is_approved')
 def is_approved(string):
     if str(string) == 'SP' or str(string) == 'SE':

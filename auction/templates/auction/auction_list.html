@@ -28,11 +28,13 @@
                     <td class="text-center">{{forloop.counter}}</td>
 
                     {% if request.user.groups.first|is_buyer %}
-                    <td class="text-center"><a href="{%url 'auction_detail' auction.id   %}"><img src="{{auction.product.photo.url}}" alt="" class="rounded-circle"
-                      style="height: 50px"></a></td>
-                    {% elif request.user.groups.first|is_admin %}
                     <td class="text-center"><img src="{{auction.product.photo.url}}" alt="" class="rounded-circle"
                         style="height: 50px"></td>
+
+                    {% elif request.user.groups.first|is_admin %}
+
+                        <td class="text-center"><a href="{%url 'auction_detail' auction.id   %}"><img src="{{auction.product.photo.url}}" alt="" class="rounded-circle"
+                            style="height: 50px"></a></td>
                     {% endif %}
 
 

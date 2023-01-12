@@ -25,6 +25,16 @@ class AuctionListView(AuctionBaseView, ListView):
 @method_decorator(required_roles(allowed_roles=['buyer','seller']), name='dispatch')
 class AuctionDetailView(AuctionBaseView, DetailView):
     """"""
+    def get_context_data(self, *args, **kwargs):
+        context = super(AuctionDetailView,
+                self).get_context_data(*args, **kwargs)
+        auction = context.get('auction')
+        if auction.status == "SE":
+            highest_bid, winner = Bid.get_auction_winner(auction.id)
+            context["winner"] = winner
+            context["highest_bid"]= highest_bid
+        return context
+
     def post(self, request, *args, **kwargs):
         print(request.POST)
         user_id = request.POST.get('user')
@@ -53,6 +63,8 @@ class AuctionDetailView(AuctionBaseView, DetailView):
 @method_decorator(required_roles(allowed_roles=['seller']), name='dispatch')
 class AuctionCreateView(AuctionBaseView, CreateView):
     """"""
+
+    success_url= reverse_lazy('home')
     def get_form(self):
         form = super().get_form()
         form.fields['start_time'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})

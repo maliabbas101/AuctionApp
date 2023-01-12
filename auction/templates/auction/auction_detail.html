@@ -12,7 +12,8 @@
         <div class="row">
           <div class="col-6">
             <div id="event-box" class="text-center bg-success rounded-pill p-1 my-3" style="--bs-bg-opacity: .6;">
-              <h4>End Time: {{auction.end_time|date:"M d, Y H:m:s"}}</h4>
+              <h4>End Time: {{ auction.end_time|date:"D d M Y" }} {{auction.end_time|time:"H:i" }}</h4>
+
             </div>
           </div>
           <div class="col-6">
@@ -62,9 +63,14 @@
                   />
                 </form>
               </div>
+
+              {% if auction.status|is_expired %}
+
               <div id="winner-text">
-                Winner is: {{auction.product.auctionuser}}
+                Winner is: {{winner}} with the bid amount: {{highest_bid}}
               </div>
+              {% endif %}
+
             </div>
           </div>
         </div>
