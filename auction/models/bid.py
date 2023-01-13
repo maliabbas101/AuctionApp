@@ -1,11 +1,10 @@
 from django.db import models
 from users.models.auction_user import AuctionUser
-from .auction import Auction
 from django.urls import reverse
 
 class Bid(models.Model):
     auctionuser = models.ForeignKey(AuctionUser, on_delete=models.CASCADE)
-    auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
+    auction = models.ForeignKey('auction.Auction', on_delete=models.CASCADE)
     bid_amount = models.FloatField()
 
 
@@ -21,5 +20,6 @@ class Bid(models.Model):
                 max_bid=bid.bid_amount
                 winner = bid.auctionuser
         return max_bid, winner
+
 
 

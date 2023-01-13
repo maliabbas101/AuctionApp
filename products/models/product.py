@@ -25,6 +25,7 @@ class Product(models.Model):
     photo = models.ImageField(upload_to='media/products/',
                               default='media/prod_c8m26c.png')
     auctionuser = models.ForeignKey(AuctionUser, on_delete=models.CASCADE)
+    owner = models.ForeignKey(AuctionUser, on_delete=models.CASCADE, related_name='owner_product_set', null=True, blank=True)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE)
 
@@ -50,6 +51,10 @@ class Product(models.Model):
     @staticmethod
     def get_product_by_id(id):
         return Product.objects.filter(id=id)
+
+    @staticmethod
+    def get_product_by_owner(owner):
+        return Product.objects.filter(owner=owner)
 
     @staticmethod
     def get_products_by_category(category_id):

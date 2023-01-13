@@ -12,6 +12,7 @@ from users.models.auction_user import AuctionUser
 from products.models.product import Product
 from AuctApp.decorators import required_roles
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 class AuctionBaseView(View):
     model = Auction
     fields = ['product', 'start_time', 'end_time']
@@ -36,7 +37,6 @@ class AuctionDetailView(AuctionBaseView, DetailView):
         return context
 
     def post(self, request, *args, **kwargs):
-        print(request.POST)
         user_id = request.POST.get('user')
         auction_user = AuctionUser.get_auction_user_by_id(user_id).first()
         auction_id = request.POST.get('auction')
@@ -58,17 +58,19 @@ class AuctionDetailView(AuctionBaseView, DetailView):
         if request.user.email != obj.product.auctionuser.email and str(group) !='buyer':
             raise PermissionDenied
         return super(AuctionDetailView, self).dispatch(request, *args, **kwargs)
-# @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
+
 
 @method_decorator(required_roles(allowed_roles=['seller']), name='dispatch')
 class AuctionCreateView(AuctionBaseView, CreateView):
     """"""
 
-    success_url= reverse_lazy('home')
+    success_url = reverse_lazy("home")
+
     def get_form(self):
         form = super().get_form()
         form.fields['start_time'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
         form.fields['end_time'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        form.fields['product'].queryset= Product.objects.all().exclude(status='SS').exclude(~Q(auctionuser = self.request.user))
         return form
 
     def post(self, request, *args, **kwargs):

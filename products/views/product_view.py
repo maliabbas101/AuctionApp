@@ -1,17 +1,19 @@
-from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from ..models.product import Product
 from django.urls import reverse_lazy
 from django.views import View
-# from customers.decorators import required_roles
 from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied
 from django import forms
 from django.contrib import messages
 from AuctApp.decorators import required_roles
-
+from django.shortcuts import render
+from users.models.auction_user import AuctionUser
+from users.models.review import Review
+from django.shortcuts import redirect
 class ProductBaseView(View):
     model = Product
-    fields = ['title','description','starting_price','category','photo', 'auctionuser']
+    fields = ['title','description','starting_price','category','photo']
     success_url = reverse_lazy('products')
 
 @method_decorator(required_roles(allowed_roles=['admin', 'seller']), name='dispatch')
@@ -23,15 +25,21 @@ class ProductListView(ProductBaseView, ListView):
 class ProductCreateView(ProductBaseView, CreateView):
     """View to create a new product"""
 
+
+
     def get_form(self):
         form = super().get_form()
         form.fields['photo'].widget = forms.FileInput(attrs={'multiple': 'true', 'accept': 'image/*'})
         return form
 
+
     def post(self, request, *args, **kwargs):
         messages.success(request, "Product created successfully.")
         return super().post(request, *args, **kwargs)
 
+    def form_valid(self, form):
+        form.instance.auctionuser = self.request.user
+        return super(ProductCreateView, self).form_valid(form)
 
 
 
@@ -66,5 +74,20 @@ class ProductDeleteView(ProductBaseView, DeleteView):
 
 class PurchasedProductView(View):
     def get(self,request):
-        # If request.user is owner of any product we need to get those products we need to pass these to context and ultimately render it on our template
-        pass
+        products = Product.get_product_by_owner(request.user)
+        context = {
+            'product_list': products
+        }
+        return render(request, 'products/purchased_products.html', context)
+
+    def post(self,request):
+        auction_seller_id = request.POST.get('seller')
+        auction_seller = AuctionUser.get_auction_user_by_id(auction_seller_id).first()
+        owner_id = request.POST.get('buyer')
+        auction_buyer = AuctionUser.get_auction_user_by_id(owner_id).first()
+        review = request.POST.get('review')
+
+        new_review = Review(auctionuser_buyer=auction_buyer, auctionuser_seller=auction_seller, review = review)
+        new_review.save()
+        messages.success(request, 'Review added.')
+        return redirect('purchased_products')

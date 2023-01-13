@@ -1,11 +1,15 @@
 from django.db import models
 from products.models.product import Product
+from .bid import Bid
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import datetime
 import schedule
 import time
 import threading
+from django.conf import settings
+from django.core.mail import send_mail
+
 
 class Auction(models.Model):
     STATUS_EXPIRED = "SE"
@@ -57,18 +61,24 @@ def set_expiry(sender,instance,created,**kwargs):
      time_now = datetime.datetime.now()-datetime.timedelta(hours=-5)
      timesince =  end_date-time_now
      minutessince = int(timesince.total_seconds() / 60)
-     print(minutessince)
      schedule.every(minutessince).minutes.do(expiry_job, instance=instance)
-
-
-
      time.sleep(1)
-
-
+ 
 def expiry_job(instance):
+    print("Executing Job now")
     instance.status = "SE"
+    product_id = instance.product.id
+    product = Product.get_product_by_id(product_id).first()
+    product.status = "SS"
+    max_bid,winner = Bid.get_auction_winner(instance.id)
+    product.owner = winner
+    subject = 'Congratulations on Winning'
+    message = f'Hi {winner.username}, I am pleased to inform you that you have won the product {product.title} in an auction.'
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [winner.email, ]
+    send_mail( subject, message, email_from, recipient_list )
     instance.save()
-
+    product.save()
     return schedule.CancelJob
 
 
