@@ -86,6 +86,21 @@ class AuctionDeleteView(AuctionBaseView, DeleteView):
         messages.error(request, "Auction deleted successfully.")
         return super().post(request, *args, **kwargs)
 
+@method_decorator(required_roles(allowed_roles=['seller']), name='dispatch')
+class SellerAuctionListView(View):
+    """"""
+
+    def get(self, request):
+        auction_list = Auction.get_auction_by_product_user(request.user.id)
+        context = {
+            'auction_list' : auction_list
+        }
+        return render(request,'auction/sellerauction_list.html', context)
+
+
+
+
+
 
 required_roles(allowed_roles=['admin'])
 def approval_auction(request, pk):

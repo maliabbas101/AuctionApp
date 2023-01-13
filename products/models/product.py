@@ -57,6 +57,10 @@ class Product(models.Model):
         return Product.objects.filter(owner=owner)
 
     @staticmethod
+    def get_products_of_auctionuser(user):
+        return Product.objects.filter(auctionuser=user)
+
+    @staticmethod
     def get_products_by_category(category_id):
         if (category_id):
             return Product.objects.filter(category_id=category_id)

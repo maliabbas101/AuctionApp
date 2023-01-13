@@ -6,53 +6,53 @@
         <p>{{colname}}</p>
     {% endfor %}
 {% endfor %}
-<div class="container d-flex mt-5" style="width: 70%;">
-    <div class="col">
-        <h1 class="text-center">All Products</h1>
-        <table class="table table-striped mt-5 table-hover">
-            <thead>
-                <tr>
-                    <th class="text-center" scope="col">S#No</th>
-                    <th class="text-center" scope="col">Picture</th>
-                    <th class="text-center" scope="col">Title</th>
-                    <th class="text-center" scope="col">Category</th>
-                    <th class="text-center" scope="col">Owner</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for product in product_list %}
 
-                {% if request.user.groups.first|is_admin or request.user.email|is_owner:product.auctionuser.email %}
-                <tr>
-                    <td class="text-center">{{forloop.counter}}</td>
-                    <td class="text-center"><img src="{{product.photo.url}}" alt="" class="rounded-circle"
-                      style="height: 50px"></td>
+<div class="container-fluid mt-3">
+    <div class="row">
+      <div class="col-lg-2">
+        <h3>Products</h3>
+        <ul class="list-group">
+          <a class="list-group-item list-group-item-action" href="{%url 'products'%}">All Products</a>
+          <a
+            class="list-group-item list-group-item-action"
+            href="{%url 'seller-auctions'%}">Auction Products</a>
+        </ul>
+      </div>
+      <div id="products" class="col-lg-8">
+        <h3 class="text-center">
 
-                    <td class="text-center">{{product.title}}</td>
-                    <td class="text-center"><b>{{product.category}}</b></td>
-                    <td class="text-center"><b>{{product.auctionuser}}</b></td>
-
-                {% if request.user.groups.first|is_seller %}
-
-                <td><a href="{% url 'product_update' product.id %} ">Update</a></td>
-                {% endif %}
-
-                <td><a href="{% url 'product_delete' product.id %}">Delete</a></td>
-                <td></td>
-                <td></td>
-                {% endif %}
-                </tr>
-                <tr>
-                </tr>
-
-            {% endfor %}
-
-            </tbody>
-        </table>
+        </h3>
+        <div class="row mx-auto mt-3">
+         {% for product in product_list %}
+         {% if request.user.groups.first|is_admin or request.user.email|is_owner:product.auctionuser.email %}
+          <div class="card mx-auto mb-3" id="{{ auction.id }}" style="width: 18rem; background-color: #2e2e2d; color: white;">
+            <img src="{{product.photo.url}}" class="card-img-top mt-3" alt="" />
+            <div class="card-body">
+              <h5 class="card-title">{{product.title}} | {{product.category}}</h5>
+              <p class="card-text">
+                <b>Starting Bid:{{ product.starting_price }}</b>
+              </p>
+              <p>Created by: <strong>{{ product.auctionuser }}</strong></p>
+            </div>
+            <div class="row mb-2 text-center">
+                <div class="col-6">
+                    {% if request.user.groups.first|is_seller %}
+                        <a href="{% url 'product_update' product.id %} "><button class="btn btn-outline-light">Update</button></a>
+                    {% endif %}
+                </div>
+                <div class="col-6">
+                    <a href="{% url 'product_delete' product.id %}"> <button class="btn btn-outline-light">Delete</button></a>
+                </div>
+            </div>
+            <div class="card-footer text-muted text-center">
+                <h3>{{product.get_status_display}}</h3>
+            </div>
+           </div>
+           {% endif %}
+           {% endfor %}
+          </div>
+        </div>
+      </div>
     </div>
-
-</div>
-
+  </div>
 {% endblock content %}

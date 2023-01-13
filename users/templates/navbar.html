@@ -18,7 +18,7 @@
         {% endif %}
 
 
-        {% if request.user.groups.first|is_admin or request.user.groups.first|is_seller %}
+        {% if request.user.groups.first|is_admin%}
 
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{%url 'products'%}">
@@ -30,7 +30,6 @@
 
 
         {% if request.user.groups.first|is_seller %}
-
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{%url 'product_create'%}">
             Create Product
@@ -39,6 +38,12 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{%url 'auction_create'%}">
             Create Auction
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{%url 'seller-auctions'%}">
+            Your Auctions
           </a>
         </li>
         {% endif %}

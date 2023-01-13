@@ -47,6 +47,10 @@ class Auction(models.Model):
         return Auction.objects.filter(id=id)
 
     @staticmethod
+    def get_auction_by_product_user(id):
+        return Auction.objects.filter(product__auctionuser__id=id)
+
+    @staticmethod
     def get_auctions_by_category(category_id):
       if (category_id):
         return Auction.objects.filter(product__category__id=category_id)
@@ -63,7 +67,7 @@ def set_expiry(sender,instance,created,**kwargs):
      minutessince = int(timesince.total_seconds() / 60)
      schedule.every(minutessince).minutes.do(expiry_job, instance=instance)
      time.sleep(1)
- 
+
 def expiry_job(instance):
     print("Executing Job now")
     instance.status = "SE"

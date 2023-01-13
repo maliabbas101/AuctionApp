@@ -60,7 +60,44 @@
 {% endif %}
 
 {% else %}
-<h1 class="text-center mt-3">List of bids on your products</h1>
+<div class="container-fluid mt-3">
+  <div class="row">
+    <div class="col-lg-2">
+      <h3>Products</h3>
+      <ul class="list-group">
+        <a class="list-group-item list-group-item-action" href="{%url 'products'%}">All Products</a>
+        <a
+          class="list-group-item list-group-item-action"
+          href="{%url 'seller-auctions'%}">Auction Products</a>
+      </ul>
+    </div>
+    <div id="products" class="col-lg-8">
+      <h3 class="text-center">
+
+      </h3>
+      <div class="row mx-auto mt-3">
+       {% for auction in auctions %}
+        {% if auction.status|is_approved %}
+        <div class="card mx-auto mb-3" id="{{ auction.id }}" style="width: 18rem">
+          <a href="{% url 'auction_detail' auction.id %}"><img src="{{ auction.product.photo.url }}" class="card-img-top mt-3" alt="" /></a>
+          <div class="card-body">
+            <h5 class="card-title">{{ auction.product.title }}</h5>
+            <p class="card-text">
+              {{ auction.product.description }}
+              <b>Starting Bid:{{ auction.product.starting_price }}</b>
+            </p>
+            <p>Created by: <strong>{{ auction.product.auctionuser }}</strong></p>
+          </div>
+          <a href="{% url 'auction_detail' auction.id %}" class="text-center mb-3"><button class="btn btn-outline-success">View Auction</button></a>
+         </div>
+         {% endif %}
+         {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endif %}
 {% else %}
    <div class="text-center">

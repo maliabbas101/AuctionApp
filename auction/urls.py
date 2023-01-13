@@ -4,6 +4,8 @@ from .import views
 urlpatterns = [
     path('', views.auction_view.AuctionListView.as_view(),
          name='auctions'),
+    path('seller-auctions', views.auction_view.SellerAuctionListView.as_view(),
+         name='seller-auctions'),
     path('<int:pk>/detail',
          views.auction_view.AuctionDetailView.as_view(), name='auction_detail'),
     path('create/', views.auction_view.AuctionCreateView.as_view(),
