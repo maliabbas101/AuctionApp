@@ -74,7 +74,7 @@ def expiry_job(instance):
     product_id = instance.product.id
     product = Product.get_product_by_id(product_id).first()
     product.status = "SS"
-    max_bid,winner = Bid.get_auction_winner(instance.id)
+    max_bid,winner= Bid.get_auction_winner(instance.id)
     product.owner = winner
     subject = 'Congratulations on Winning'
     message = f'Hi {winner.username}, I am pleased to inform you that you have won the product {product.title} in an auction.'

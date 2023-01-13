@@ -4,106 +4,85 @@
 
 {% block content %}
 {% if user.is_authenticated%}
-
-
 {% if request.user.groups.first|is_admin%}
-
-<h1>Hi admin</h1>
-
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card" style="width: 18rem; background-color: #2e2e2d; color: white;">
+            <img src="https://res.cloudinary.com/dllkbvnu7/image/upload/b_rgb:fff9f9,fl_aavif,o_100/v1673627322/media/users_jyrr5b.png" alt="Image Loading" class="card-img-top">
+            <div class="card-body">
+              <a class="btn btn-outline-light"  href="{% url 'auction_users' %}">Users</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card" style="width: 18rem; background-color: #2e2e2d; color: white;">
+            <img src="https://res.cloudinary.com/dllkbvnu7/image/upload/v1673629128/media/prod_vosefk.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <a href="{%url 'products'%}" class="btn btn-outline-light">Products</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card" style="width: 18rem;background-color: #2e2e2d; color: white;">
+            <img src="https://res.cloudinary.com/dllkbvnu7/image/upload/b_rgb:ede9e9,c_crop,h_512,r_30,y_0/v1673629701/media/bid_lgzh6i.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <a class="btn btn-outline-light"  href="{%url 'auctions'%}">
+                Auctions
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 {% elif request.user.groups.first|is_buyer%}
-
 {% if not auctions %}
-
-<h1>No Auctions Ongoing!!</h1>
+    <h1 class="text-center">No Auctions Ongoing!!</h1>
 {% else %}
-<div class="container-fluid mt-3">
-  <div class="row">
-    <div class="col-lg-2">
-      <h3>Categories</h3>
-      <ul class="list-group">
-        <a class="list-group-item list-group-item-action" href="/">All Items</a>
-        {% if categories %} {% for category in categories %}
-        <a
-          class="list-group-item list-group-item-action"
-          href="/?category={{category.id}}"
-          >{{category.name}}</a
-        >
-        {% endfor %} {% endif %}
-      </ul>
-    </div>
-    <div id="products" class="col-lg-8">
-      <h3 class="text-center">
-        Hi {{ user.username }}!
-      </h3>
-      <div class="row mx-auto mt-3">
-       {% for auction in auctions %}
-        {% if auction.status|is_approved %}
-        <div class="card mx-auto mb-3" id="{{ auction.id }}" style="width: 18rem">
-          <a href="{% url 'auction_detail' auction.id %}"><img src="{{ auction.product.photo.url }}" class="card-img-top mt-3" alt="" /></a>
-          <div class="card-body">
-            <h5 class="card-title">{{ auction.product.title }}</h5>
-            <p class="card-text">
-              {{ auction.product.description }}
-              <b>Starting Bid:{{ auction.product.starting_price }}</b>
-            </p>
-            <p>Created by: <strong>{{ auction.product.auctionuser }}</strong></p>
+    <div class="container-fluid mt-3">
+      <div class="row">
+        <div class="col-lg-2">
+          <h3>Categories</h3>
+          <ul class="list-group">
+            <a class="list-group-item list-group-item-action" href="/" style="background-color: #2e2e2d; color: white;">All Items</a>
+            {% if categories %} {% for category in categories %}
+            <a
+              class="list-group-item list-group-item-action"
+              href="/?category={{category.id}}"
+              >{{category.name}}</a
+            >
+            {% endfor %} {% endif %}
+          </ul>
+        </div>
+        <div id="products" class="col-lg-8">
+          <div class="row mx-auto mt-3">
+          {% for auction in auctions %}
+            {% if auction.status|is_approved %}
+            <div class="card mx-auto mb-3" id="{{ auction.id }}" style="width: 18rem; background-color: #2e2e2d; color: white;">
+              <a href="{% url 'auction_detail' auction.id %}"><img src="{{ auction.product.photo.url }}" class="card-img-top mt-3" alt="" /></a>
+              <div class="card-body">
+                <h5 class="card-title">{{ auction.product.title }}</h5>
+                <p class="card-text">
+                  <b>Starting Bid:{{ auction.product.starting_price }}</b>
+                </p>
+                <p>Created by: <strong>{{ auction.product.auctionuser }}</strong></p>
+              </div>
+              <a href="{% url 'auction_detail' auction.id %}" class="text-center mb-3"><button class="btn btn-outline-light">View Auction</button></a>
+            </div>
+            {% endif %}
+            {% endfor %}
+            </div>
           </div>
-          <a href="{% url 'auction_detail' auction.id %}" class="text-center mb-3"><button class="btn btn-outline-success">View Auction</button></a>
-         </div>
-         {% endif %}
-         {% endfor %}
         </div>
       </div>
     </div>
-  </div>
-</div>
 {% endif %}
-
-{% else %}
-<div class="container-fluid mt-3">
-  <div class="row">
-    <div class="col-lg-2">
-      <h3>Products</h3>
-      <ul class="list-group">
-        <a class="list-group-item list-group-item-action" href="{%url 'products'%}">All Products</a>
-        <a
-          class="list-group-item list-group-item-action"
-          href="{%url 'seller-auctions'%}">Auction Products</a>
-      </ul>
-    </div>
-    <div id="products" class="col-lg-8">
-      <h3 class="text-center">
-
-      </h3>
-      <div class="row mx-auto mt-3">
-       {% for auction in auctions %}
-        {% if auction.status|is_approved %}
-        <div class="card mx-auto mb-3" id="{{ auction.id }}" style="width: 18rem">
-          <a href="{% url 'auction_detail' auction.id %}"><img src="{{ auction.product.photo.url }}" class="card-img-top mt-3" alt="" /></a>
-          <div class="card-body">
-            <h5 class="card-title">{{ auction.product.title }}</h5>
-            <p class="card-text">
-              {{ auction.product.description }}
-              <b>Starting Bid:{{ auction.product.starting_price }}</b>
-            </p>
-            <p>Created by: <strong>{{ auction.product.auctionuser }}</strong></p>
-          </div>
-          <a href="{% url 'auction_detail' auction.id %}" class="text-center mb-3"><button class="btn btn-outline-success">View Auction</button></a>
-         </div>
-         {% endif %}
-         {% endfor %}
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 {% endif %}
 {% else %}
-   <div class="text-center">
-     <h3 class="mt-3">Login to View Products and start bidding.</h3>
-     <img src="https://res.cloudinary.com/dllkbvnu7/image/upload/v1673006498/media/auction_frontpage_xlh8ht.png" alt="Image Loading" style="width: 60vw;">
-   </div>
+    <div class="text-center">
+      <h3 class="mt-3">Login to View Products and start bidding.</h3>
+      <img src="https://res.cloudinary.com/dllkbvnu7/image/upload/v1673006498/media/auction_frontpage_xlh8ht.png" alt="Image Loading" style="width: 60vw;">
+    </div>
 {% endif %}
 
 {% endblock %}

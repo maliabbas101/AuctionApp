@@ -1,31 +1,18 @@
 {% extends 'base.html' %}
 {% load tags %}
 {% block content %}
-{% for product in product_list %}
-    {% for colname in product.column_set.all  %}
-        <p>{{colname}}</p>
-    {% endfor %}
-{% endfor %}
-
 <div class="container-fluid mt-3">
     <div class="row">
-      <div class="col-lg-2">
-        <h3>Products</h3>
-        <ul class="list-group">
-          <a class="list-group-item list-group-item-action" href="{%url 'products'%}">All Products</a>
-          <a
-            class="list-group-item list-group-item-action"
-            href="{%url 'seller-auctions'%}">Auction Products</a>
-        </ul>
-      </div>
+      {% if request.user.groups.first|is_seller %}
+      {% include 'products/shared_list.html' %}
       <div id="products" class="col-lg-8">
-        <h3 class="text-center">
-
-        </h3>
+      {% else %}
+      <div id="products" class="col-lg-12">
+      {% endif %}
         <div class="row mx-auto mt-3">
          {% for product in product_list %}
          {% if request.user.groups.first|is_admin or request.user.email|is_owner:product.auctionuser.email %}
-          <div class="card mx-auto mb-3" id="{{ auction.id }}" style="width: 18rem; background-color: #2e2e2d; color: white;">
+          <div class="card mx-auto mb-3" id="{{ product.id }}" style="width: 18rem; background-color: #2e2e2d; color: white;">
             <img src="{{product.photo.url}}" class="card-img-top mt-3" alt="" />
             <div class="card-body">
               <h5 class="card-title">{{product.title}} | {{product.category}}</h5>

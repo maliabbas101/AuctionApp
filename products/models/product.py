@@ -15,8 +15,6 @@ class Product(models.Model):
         (STATUS_SOLD, "Sold"),
         (STATUS_PENDING, "Pending"),
     ]
-
-
     title = models.CharField(max_length=50, unique=True)
     description = models.CharField(max_length=255)
     starting_price = models.FloatField(default=0.0, validators=[
@@ -34,6 +32,10 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.starting_price = round(self.my_float, 2)
+        super(Product, self).save(*args, **kwargs)
 
     def increase_starting_price(self, number):
         self.starting_price = float(number)
