@@ -11,9 +11,11 @@ from django.shortcuts import render
 from users.models.auction_user import AuctionUser
 from users.models.review import Review
 from django.shortcuts import redirect
+from ..models.image import Image
+
 class ProductBaseView(View):
     model = Product
-    fields = ['title','description','starting_price','category','photo']
+    fields = ['title','description','starting_price','category']
     success_url = reverse_lazy('products')
 
 @method_decorator(required_roles(allowed_roles=['admin', 'seller']), name='dispatch')
@@ -21,24 +23,35 @@ class ProductListView(ProductBaseView, ListView):
     """
     """
 
+
 @method_decorator(required_roles(allowed_roles=['seller']), name='dispatch')
 class ProductCreateView(ProductBaseView, CreateView):
     """View to create a new product"""
 
-
-
     def get_form(self):
+
         form = super().get_form()
-        form.fields['photo'].widget = forms.FileInput(attrs={'multiple': 'true', 'accept': 'image/*'})
+
+        # form.fields['photo'].widget = forms.FileInput(attrs={'multiple': 'true', 'accept': 'image/*'})
         return form
 
 
     def post(self, request, *args, **kwargs):
-        messages.success(request, "Product created successfully.")
+
+
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.auctionuser = self.request.user
+        self.object = form.save()
+        product = Product.get_product_by_id(self.object.id).first()
+        photos = self.request.FILES.getlist('photo')
+        if photos:
+            for image in photos:
+                Image.objects.create(image=image, product= product)
+        else:
+            Image.objects.create(product = product)
+        messages.success(self.request, "Product created successfully.")
         return super(ProductCreateView, self).form_valid(form)
 
 

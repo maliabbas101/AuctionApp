@@ -13,7 +13,13 @@
          {% for product in product_list %}
          {% if request.user.groups.first|is_admin or request.user.email|is_owner:product.auctionuser.email %}
           <div class="card mx-auto mb-3" id="{{ product.id }}" style="width: 18rem; background-color: #2e2e2d; color: white;">
-            <img src="{{product.photo.url}}" class="card-img-top mt-3" alt="" />
+
+            {% for image in product.image_set.all %}
+            <img src="{{image.image.url}}" class="card-img-top mt-3" alt="" />
+            {% empty %}
+              <!-- no entries -->
+            {% endfor %}
+            <img src="{{product.image_set.first.url}}" class="card-img-top mt-3" alt="" />
             <div class="card-body">
               <h5 class="card-title">{{product.title}} | {{product.category}}</h5>
               <p class="card-text">

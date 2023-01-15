@@ -19,9 +19,7 @@ class Product(models.Model):
     description = models.CharField(max_length=255)
     starting_price = models.FloatField(default=0.0, validators=[
         MinValueValidator(1.0)
-    ])
-    photo = models.ImageField(upload_to='media/products/',
-                              default='media/prod_c8m26c.png')
+    ]) 
     auctionuser = models.ForeignKey(AuctionUser, on_delete=models.CASCADE)
     owner = models.ForeignKey(AuctionUser, on_delete=models.CASCADE, related_name='owner_product_set', null=True, blank=True)
     category = models.ForeignKey(
@@ -34,7 +32,7 @@ class Product(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.starting_price = round(self.my_float, 2)
+        self.starting_price = round(self.starting_price, 2)
         super(Product, self).save(*args, **kwargs)
 
     def increase_starting_price(self, number):
