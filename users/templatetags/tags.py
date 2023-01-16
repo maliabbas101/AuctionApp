@@ -48,3 +48,9 @@ def is_approved(string):
 def new_bid_amount(bid_amount):
     return bid_amount + (20 * bid_amount/100)
 
+@register.filter('is_length_zero')
+def is_length_zero(arr):
+    if (len(arr))!=0:
+        return False
+    return True
+

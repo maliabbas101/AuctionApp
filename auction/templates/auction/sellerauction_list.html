@@ -1,27 +1,35 @@
-
-
-
-
-
 {% extends 'base.html' %}
 {% load tags %}
 {% block content %}
 
 <div class="container-fluid mt-3">
-    <div class="row">
-       {% include 'products/shared_list.html' %}
+  <div class="row">
+    {% include 'products/shared_list.html' %}
+    {% if auction_list|is_length_zero%}
+    <h1 class="text-center">None of your products are in auction.</h1>
+    {%else%}
       <div id="products" class="col-lg-8">
         <div class="row mx-auto mt-3">
         {% for auction in auction_list %}
           <div class="card mx-auto mb-3" id="{{ auction.id }}" style="width: 18rem; background-color: #2e2e2d; color: white;">
-            <a href="{%url 'auction_detail' auction.id   %}"><img src="{{auction.product.photo.url}}" alt="" class="card-img-top mt-3"
-               ></a>
-
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active mt-2">
+                  <a href="{%url 'auction_detail' auction.id   %}"><img src="{{auction.product.image_set.first.image.url}}" alt="" class="card-img-top mt-3"
+                    ></a>
+                </div>
+                {% for image in auction.product.image_set.all %}
+                <div class="carousel-item">
+                  <a href="{%url 'auction_detail' auction.id   %}"><img src="{{image.image.url}}" class="card-img-top mt-3" alt="" /></a>
+                </div>
+                {% empty %}
+                  <!-- no entries -->
+                {% endfor %}
+              </div>
             <div class="card-body">
               <h5 class="card-title">{{auction.product.title}} | <b>{{auction.product.category}}</b></h5>
               <p class="card-text">Status: <b>{{auction.get_status_display}}</b></p>
             </div>
-
             <div class="row mb-2 text-center">
                 <div class="col">
                     <a href="{%url 'bids' auction.id   %}"><button class="btn btn-outline-light">Bids</button> </a>
@@ -34,4 +42,5 @@
       </div>
     </div>
   </div>
+  {% endif %}
 {% endblock content %}

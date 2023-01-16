@@ -3,6 +3,11 @@
 {% block content %}
 <div class="container-fluid mt-3">
     <div class="row">
+
+      {% if product_list|is_length_zero %}
+        <h1 class="text-center">No Products yet.</h1>
+      {% endif %}
+
       {% if request.user.groups.first|is_seller %}
       {% include 'products/shared_list.html' %}
       <div id="products" class="col-lg-8">
@@ -14,12 +19,20 @@
          {% if request.user.groups.first|is_admin or request.user.email|is_owner:product.auctionuser.email %}
           <div class="card mx-auto mb-3" id="{{ product.id }}" style="width: 18rem; background-color: #2e2e2d; color: white;">
 
-            {% for image in product.image_set.all %}
-            <img src="{{image.image.url}}" class="card-img-top mt-3" alt="" />
-            {% empty %}
-              <!-- no entries -->
-            {% endfor %}
-            <img src="{{product.image_set.first.url}}" class="card-img-top mt-3" alt="" />
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active mt-2">
+                  <img src="{{product.image_set.first.image.url}}" class="d-block w-100" alt="...">
+                </div>
+                {% for image in product.image_set.all %}
+                <div class="carousel-item">
+                  <img src="{{image.image.url}}" class="card-img-top mt-3" alt="" />
+                </div>
+                {% empty %}
+                  <!-- no entries -->
+                {% endfor %}
+              </div>
+            </div>
             <div class="card-body">
               <h5 class="card-title">{{product.title}} | {{product.category}}</h5>
               <p class="card-text">

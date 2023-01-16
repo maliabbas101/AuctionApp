@@ -7,56 +7,60 @@
     {% endfor %}
   {% endfor %}
   <div class="container d-flex mt-5" style="width: 70%;">
-    <div class="col">
-      <h1 class="text-center">Your Purchased Products</h1>
-      <table class="table table-active table-dark table-group-divider table-striped mt-5 table-hover">
-        <thead>
-          <tr>
-            <th class="text-center" scope="col">S#No</th>
-            <th class="text-center" scope="col">Picture</th>
-            <th class="text-center" scope="col">Title</th>
-            <th class="text-center" scope="col">Category</th>
-            <th class="text-center" scope="col">Product Owner</th>
-            <th class="text-center" scope="col">Give Review</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for product in product_list %}
+    {% if product_list|is_length_zero %}
+      <h1 class="text-center">You have not purchased any products yet.</h1>
+    {% else %}
+      <div class="col">
+        <h1 class="text-center">Your Purchased Products</h1>
+        <table class="table table-active table-dark table-group-divider table-striped mt-5 table-hover">
+          <thead>
             <tr>
-              <td class="text-center">{{ forloop.counter }}</td>
-              <td class="text-center">
-                <img src="{{ product.photo.url }}" alt="" class="rounded-circle" style="height: 50px" />
-              </td>
-
-              <td class="text-center">{{ product.title }}</td>
-              <td class="text-center">
-                <b>{{ product.category }}</b>
-              </td>
-              <td class="text-center">
-                <b>{{ product.auctionuser }}</b>
-              </td>
-              <td class="text-center">
-                <div id="bid-form">
-                  <form action="" method="POST" class="btn-block">
-                    {% csrf_token %}
-                    <input hidden type="text" name="seller" value="{{ product.auctionuser.id }}" />
-                    <input hidden type="text" name="buyer" value="{{ request.user.id }}" />
-                    <div class="form-group mt-3 mb-3">
-                      <input id="bid-amount" class="form-control" type="text" name="review" />
-                    </div>
-                    <input type="submit" id="bid-button" class="btn btn-outline-success" value="Review" />
-                  </form>
-                </div>
-              </td>
-              <td></td>
-              <td></td>
+              <th class="text-center" scope="col">S#No</th>
+              <th class="text-center" scope="col">Picture</th>
+              <th class="text-center" scope="col">Title</th>
+              <th class="text-center" scope="col">Category</th>
+              <th class="text-center" scope="col">Product Owner</th>
+              <th class="text-center" scope="col">Give Review</th>
+              <th></th>
+              <th></th>
             </tr>
-            <tr></tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {% for product in product_list %}
+              <tr>
+                <td class="text-center">{{ forloop.counter }}</td>
+                <td class="text-center">
+                  <img src="{{ product.image_set.first.image.url }}" alt="" class="rounded-circle" style="height: 50px" />
+                </td>
+
+                <td class="text-center">{{ product.title }}</td>
+                <td class="text-center">
+                  <b>{{ product.category }}</b>
+                </td>
+                <td class="text-center">
+                  <b>{{ product.auctionuser }}</b>
+                </td>
+                <td class="text-center">
+                  <div id="bid-form">
+                    <form action="" method="POST" class="btn-block">
+                      {% csrf_token %}
+                      <input hidden type="text" name="seller" value="{{ product.auctionuser.id }}" />
+                      <input hidden type="text" name="buyer" value="{{ request.user.id }}" />
+                      <div class="form-group mt-3 mb-3">
+                        <input id="bid-amount" class="form-control" type="text" name="review" />
+                      </div>
+                      <input type="submit" id="bid-button" class="btn btn-outline-success" value="Review" />
+                    </form>
+                  </div>
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
   </div>
 {% endblock %}

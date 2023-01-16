@@ -10,6 +10,8 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{%url 'purchased_products'%}">
              Purchased Products
+             <span class="badge bg-success text-light"
+             >{{product_list|length}}</span>
           </a>
         </li>
         {% endif %}
