@@ -21,5 +21,10 @@ class Bid(models.Model):
                 winner = bid.auctionuser
         return max_bid, winner
 
+    @staticmethod
+    def get_bids_by_auction_user(auctionuser,auction):
+        bids = Bid.objects.filter(auctionuser=auctionuser).filter(auction=auction)
+        return bids
+
 
 

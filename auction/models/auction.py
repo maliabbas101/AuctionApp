@@ -61,6 +61,7 @@ class Auction(models.Model):
 @receiver(post_save, sender=Auction)
 def set_expiry(sender,instance,created,**kwargs):
    if created:
+     print("here");
      end_date = instance.end_time
      time_now = datetime.datetime.now()-datetime.timedelta(hours=-5)
      timesince =  end_date-time_now

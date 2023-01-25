@@ -18,19 +18,26 @@
          {% for product in product_list %}
          {% if request.user.groups.first|is_admin or request.user.email|is_owner:product.auctionuser.email %}
           <div class="card mx-auto mb-3" id="{{ product.id }}" style="width: 18rem; background-color: #2e2e2d; color: white;">
-
-            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-              <div class="carousel-inner">
-                <div class="carousel-item active mt-2">
-                  <img src="{{product.image_set.first.image.url}}" class="d-block w-100" alt="...">
+            <div id="carouselExample_{{product.id}}" class="carousel slide">
+              <div class="carousel-inner box">
+                <div class="carousel-item active mt-2 container">
+                  <img src="{{product.image_set.first.image.url}}" class="d-block w-100 carousel_img" alt="...">
                 </div>
                 {% for image in product.image_set.all %}
-                <div class="carousel-item">
-                  <img src="{{image.image.url}}" class="card-img-top mt-3" alt="" />
+                <div class="carousel-item container mt-2">
+                  <img src="{{image.image.url}}" class="card-img-top mt-3 carousel_img" alt=""  />
                 </div>
                 {% empty %}
                   <!-- no entries -->
                 {% endfor %}
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample_{{product.id}}" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample_{{product.id}}" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
               </div>
             </div>
             <div class="card-body">
@@ -42,9 +49,7 @@
             </div>
             <div class="row mb-2 text-center">
                 <div class="col-6">
-                    {% if request.user.groups.first|is_seller %}
-                        <a href="{% url 'product_update' product.id %} "><button class="btn btn-outline-light">Update</button></a>
-                    {% endif %}
+                    <a href="{% url 'product_update' product.id %} "><button class="btn btn-outline-light">Update</button></a>
                 </div>
                 <div class="col-6">
                     <a href="{% url 'product_delete' product.id %}"> <button class="btn btn-outline-light">Delete</button></a>

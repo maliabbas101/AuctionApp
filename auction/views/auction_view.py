@@ -30,6 +30,10 @@ class AuctionDetailView(AuctionBaseView, DetailView):
         context = super(AuctionDetailView,
                 self).get_context_data(*args, **kwargs)
         auction = context.get('auction')
+
+        bids_by_user = Bid.get_bids_by_auction_user(self.request.user, auction)
+        context["user_bids"] = bids_by_user
+
         if auction.status == "SE":
             highest_bid, winner = Bid.get_auction_winner(auction.id)
             context["winner"] = winner
@@ -69,7 +73,7 @@ class AuctionCreateView(AuctionBaseView, CreateView):
     def get_form(self):
         form = super().get_form()
         form.fields['start_time'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
-        form.fields['end_time'].widget = forms.DateTimeInput(attrs={'type': 'datetime-local'})
+        form.fields['end_time'].widget = forms.DateTimeInput(attrs={ 'type': 'datetime-local',})
         form.fields['product'].queryset= Product.objects.all().exclude(status='SS').exclude(~Q(auctionuser = self.request.user))
         return form
 

@@ -12,19 +12,27 @@
         <div class="row mx-auto mt-3">
         {% for auction in auction_list %}
           <div class="card mx-auto mb-3" id="{{ auction.id }}" style="width: 18rem; background-color: #2e2e2d; color: white;">
-            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div id="carouselExample_{{auction.id}}" class="carousel slide">
               <div class="carousel-inner">
-                <div class="carousel-item active mt-2">
-                  <a href="{%url 'auction_detail' auction.id   %}"><img src="{{auction.product.image_set.first.image.url}}" alt="" class="card-img-top mt-3"
+                <div class="carousel-item active">
+                  <a href="{%url 'auction_detail' auction.id   %}"><img src="{{auction.product.image_set.first.image.url}}" alt="" class="card-img-top mt-3 carousel_img"
                     ></a>
                 </div>
                 {% for image in auction.product.image_set.all %}
                 <div class="carousel-item">
-                  <a href="{%url 'auction_detail' auction.id   %}"><img src="{{image.image.url}}" class="card-img-top mt-3" alt="" /></a>
+                  <a href="{%url 'auction_detail' auction.id   %}"><img src="{{image.image.url}}" class="card-img-top mt-3 carousel_img" alt="" /></a>
                 </div>
                 {% empty %}
                   <!-- no entries -->
                 {% endfor %}
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample_{{auction.id}}" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample_{{auction.id}}" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
               </div>
             <div class="card-body">
               <h5 class="card-title">{{auction.product.title}} | <b>{{auction.product.category}}</b></h5>

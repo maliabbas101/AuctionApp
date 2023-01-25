@@ -46,11 +46,19 @@ def is_approved(string):
 
 @register.filter('new_bid_amount')
 def new_bid_amount(bid_amount):
-    return bid_amount + (20 * bid_amount/100)
+    return round((bid_amount + (20 * bid_amount/100)),2)
+
+@register.filter('min_bid_amount')
+def min_bid_amount(bid_amount):
+    return (bid_amount+0.10)
 
 @register.filter('is_length_zero')
 def is_length_zero(arr):
     if (len(arr))!=0:
         return False
     return True
+
+@register.filter('round_off')
+def round_off(number):
+   return round(number,2)
 

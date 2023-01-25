@@ -44,7 +44,7 @@
         <div class="col-lg-2">
           <h3>Categories</h3>
           <ul class="list-group">
-            <a class="list-group-item list-group-item-action" href="/" style="background-color: #2e2e2d; color: white;">All Items</a>
+            <a class="list-group-item list-group-item-action" href="/">All Items</a>
             {% if categories %} {% for category in categories %}
             <a
               class="list-group-item list-group-item-action"
@@ -59,7 +59,7 @@
           {% for auction in auctions %}
             {% if auction.status|is_approved %}
             <div class="card mx-auto mb-3" id="{{ auction.id }}" style="width: 18rem; background-color: #2e2e2d; color: white;">
-              <a href="{% url 'auction_detail' auction.id %}"><img src="{{ auction.product.image_set.first.image.url }}" class="card-img-top mt-3" alt="" /></a>
+              <a href="{% url 'auction_detail' auction.id %}"><img src="{{ auction.product.image_set.first.image.url }}" class="card-img-top mt-3 carousel_img" alt="" /></a>
               <div class="card-body">
                 <h5 class="card-title">{{ auction.product.title }}</h5>
                 <p class="card-text">

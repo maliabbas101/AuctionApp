@@ -32,7 +32,7 @@ class ProductCreateView(ProductBaseView, CreateView):
 
         form = super().get_form()
 
-        # form.fields['photo'].widget = forms.FileInput(attrs={'multiple': 'true', 'accept': 'image/*'})
+        form.fields['starting_price'].widget = forms.NumberInput(attrs={'min': '1.00'})
         return form
 
 
@@ -58,12 +58,12 @@ class ProductCreateView(ProductBaseView, CreateView):
 
 
 
-@method_decorator(required_roles(allowed_roles=['seller']), name='dispatch')
+@method_decorator(required_roles(allowed_roles=['seller', 'admin']), name='dispatch')
 class ProductUpdateView(ProductBaseView, UpdateView):
     """View to update a product"""
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
-        if request.user.email != obj.auctionuser.email:
+        if request.user.email != obj.auctionuser.email and str(request.user.groups.first())!='admin':
             raise PermissionDenied
         return super(ProductUpdateView, self).dispatch(request, *args, **kwargs)
 
