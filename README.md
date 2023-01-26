@@ -47,6 +47,3 @@ You can deploy the application on any online cloud platform just make sure to mi
 Pull requests are welcome. For major changes, please open an issue first
 to discuss what you would like to change.
 
-## Application Link
-
-[Dinerdash](https://dinerdash91.herokuapp.com/)
