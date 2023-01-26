@@ -1,1 +1,1 @@
-from .import auction_user_view, signup_view
+from . import auction_user_view, signup_view

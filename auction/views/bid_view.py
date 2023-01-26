@@ -9,16 +9,15 @@ from django.shortcuts import render
 
 class BidBaseView(View):
     model = Bid
-    fields = ['auctionuser', 'auction', 'bid_amount']
+    fields = ["auctionuser", "auction", "bid_amount"]
 
-@method_decorator(required_roles(allowed_roles=['seller']), name='dispatch')
+
+@method_decorator(required_roles(allowed_roles=["seller"]), name="dispatch")
 class BidListView(BidBaseView, ListView):
-    """
-    """
+    """ """
+
     def get(self, request, *args, **kwargs):
-        auction_id = kwargs.get('pk')
+        auction_id = kwargs.get("pk")
         bids = Bid.objects.filter(auction=auction_id)
-        context = {
-            'bid_list': bids
-        }
-        return render(request, 'auction/bid_list.html', context)
+        context = {"bid_list": bids}
+        return render(request, "auction/bid_list.html", context)

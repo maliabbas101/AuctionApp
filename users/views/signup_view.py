@@ -12,16 +12,8 @@ class SignUpView(CreateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        self.object.groups.set(self.request.POST.get('groups'))
+        self.object.groups.set(self.request.POST.get("groups"))
         self.object.save()
 
         messages.success(self.request, "Signup Successfull.")
         return redirect(self.get_success_url())
-
-
-
-
-
-
-
-

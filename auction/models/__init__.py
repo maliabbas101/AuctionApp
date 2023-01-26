@@ -1,1 +1,1 @@
-from . import auction,bid,watchlist
+from . import auction, bid

@@ -10,23 +10,26 @@ class Product(models.Model):
     STATUS_PENDING = "PN"
 
     STATUS_CHOICES = [
-
         (STATUS_DELIVERED, "Delivered"),
         (STATUS_SOLD, "Sold"),
         (STATUS_PENDING, "Pending"),
     ]
     title = models.CharField(max_length=50, unique=True)
     description = models.CharField(max_length=255)
-    starting_price = models.FloatField(default=0.0, validators=[
-        MinValueValidator(1.0)
-    ]) 
+    starting_price = models.FloatField(default=0.0, validators=[MinValueValidator(1.0)])
     auctionuser = models.ForeignKey(AuctionUser, on_delete=models.CASCADE)
-    owner = models.ForeignKey(AuctionUser, on_delete=models.CASCADE, related_name='owner_product_set', null=True, blank=True)
-    category = models.ForeignKey(
-        Category, on_delete=models.CASCADE)
+    owner = models.ForeignKey(
+        AuctionUser,
+        on_delete=models.CASCADE,
+        related_name="owner_product_set",
+        null=True,
+        blank=True,
+    )
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     status = models.CharField(
-    max_length=2, choices=STATUS_CHOICES, default=STATUS_PENDING)
+        max_length=2, choices=STATUS_CHOICES, default=STATUS_PENDING
+    )
 
     def __str__(self):
         return self.title
@@ -38,7 +41,6 @@ class Product(models.Model):
     def increase_starting_price(self, number):
         self.starting_price = float(number)
         self.save()
-
 
     @staticmethod
     def get_all_products():
@@ -62,9 +64,7 @@ class Product(models.Model):
 
     @staticmethod
     def get_products_by_category(category_id):
-        if (category_id):
+        if category_id:
             return Product.objects.filter(category_id=category_id)
         else:
             return Product.get_all_items()
-
-

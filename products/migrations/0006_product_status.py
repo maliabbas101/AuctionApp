@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0005_delete_image'),
+        ("products", "0005_delete_image"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='product',
-            name='status',
-            field=models.CharField(choices=[('SD', 'Delivered'), ('SS', 'Sold'), ('PN', 'Pending')], default='PN', max_length=2),
+            model_name="product",
+            name="status",
+            field=models.CharField(
+                choices=[("SD", "Delivered"), ("SS", "Sold"), ("PN", "Pending")],
+                default="PN",
+                max_length=2,
+            ),
         ),
     ]

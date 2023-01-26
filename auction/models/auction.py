@@ -9,14 +9,12 @@ import time
 import threading
 
 
-
 class Auction(models.Model):
     STATUS_EXPIRED = "SE"
     STATUS_APPROVED = "SA"
     STATUS_PENDING = "SP"
 
     STATUS_CHOICES = [
-
         (STATUS_EXPIRED, "Expired"),
         (STATUS_APPROVED, "Approved"),
         (STATUS_PENDING, "Pending"),
@@ -27,15 +25,15 @@ class Auction(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     status = models.CharField(
-    max_length=2, choices=STATUS_CHOICES, default=STATUS_PENDING)
+        max_length=2, choices=STATUS_CHOICES, default=STATUS_PENDING
+    )
 
     def __str__(self):
-      return self.product.title
+        return self.product.title
 
     @staticmethod
     def number_of_auctions():
-      return Auction.objects.all().count()
-
+        return Auction.objects.all().count()
 
     @staticmethod
     def get_all_auctions():
@@ -51,22 +49,23 @@ class Auction(models.Model):
 
     @staticmethod
     def get_auctions_by_category(category_id):
-      if (category_id):
-        return Auction.objects.filter(product__category__id=category_id)
-      else:
-          return Auction.get_all_auctions()
+        if category_id:
+            return Auction.objects.filter(product__category__id=category_id)
+        else:
+            return Auction.get_all_auctions()
 
 
 @receiver(post_save, sender=Auction)
-def set_expiry(sender,instance,created,**kwargs):
-   if created:
-     print("here");
-     end_date = instance.end_time
-     time_now = datetime.datetime.now()-datetime.timedelta(hours=-5)
-     timesince =  end_date-time_now
-     minutessince = int(timesince.total_seconds() / 60)
-     schedule.every(minutessince).minutes.do(expiry_job, instance=instance)
-     time.sleep(1)
+def set_expiry(sender, instance, created, **kwargs):
+    if created:
+        print("here")
+        end_date = instance.end_time
+        time_now = datetime.datetime.now() - datetime.timedelta(hours=-5)
+        timesince = end_date - time_now
+        minutessince = int(timesince.total_seconds() / 60)
+        schedule.every(minutessince).minutes.do(expiry_job, instance=instance)
+        time.sleep(1)
+
 
 def expiry_job(instance):
     print("Executing Job now")
@@ -74,18 +73,18 @@ def expiry_job(instance):
     product_id = instance.product.id
     product = Product.get_product_by_id(product_id).first()
     product.status = "SS"
-    max_bid,winner= Bid.get_auction_winner(instance.id)
+    max_bid, winner = Bid.get_auction_winner(instance.id)
     product.owner = winner
-    subject = 'Congratulations on Winning'
-    message = f'Hi {winner.username}, I am pleased to inform you that you have won the product {product.title} in an auction.'
+    subject = "Congratulations on Winning"
+    message = f"Hi {winner.username}, I am pleased to inform you that you have won the product {product.title} in an auction."
     email_from = settings.EMAIL_HOST_USER
-    recipient_list = [winner.email, ]
-    send_mail( subject, message, email_from, recipient_list )
+    recipient_list = [
+        winner.email,
+    ]
+    send_mail(subject, message, email_from, recipient_list)
     instance.save()
     product.save()
     return schedule.CancelJob
-
-
 
 
 class Thread(object):
@@ -99,5 +98,6 @@ class Thread(object):
         while True:
             schedule.run_pending()
             time.sleep(self.interval)
+
 
 thread = Thread()

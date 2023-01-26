@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('auction', '0006_alter_bid_bid_amount'),
+        ("auction", "0006_alter_bid_bid_amount"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='auction',
-            name='status',
-            field=models.CharField(choices=[('SE', 'Expired'), ('SA', 'Approved'), ('SP', 'Pending')], default='SP', max_length=2),
+            model_name="auction",
+            name="status",
+            field=models.CharField(
+                choices=[("SE", "Expired"), ("SA", "Approved"), ("SP", "Pending")],
+                default="SP",
+                max_length=2,
+            ),
         ),
     ]

@@ -9,13 +9,19 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('products', '0008_product_owner'),
+        ("products", "0008_product_owner"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
-            name='owner',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='owner_product_set', to=settings.AUTH_USER_MODEL),
+            model_name="product",
+            name="owner",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="owner_product_set",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]
