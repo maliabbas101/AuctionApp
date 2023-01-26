@@ -37,29 +37,44 @@
     </div>
 {% elif request.user.groups.first|is_buyer%}
 {% if not auctions %}
-    <h1 class="text-center">No Auctions Ongoing!!</h1>
+    <div class="row">
+      {% include 'shared.html' %}
+      <div class="col-lg-10">
+        <h1 class="text-center mt-3">No Auctions Ongoing in the selected Category!!</h1>
+      </div>
+    </div>
 {% else %}
     <div class="container-fluid mt-3">
       <div class="row">
-        <div class="col-lg-2">
-          <h3>Categories</h3>
-          <ul class="list-group">
-            <a class="list-group-item list-group-item-action" href="/">All Items</a>
-            {% if categories %} {% for category in categories %}
-            <a
-              class="list-group-item list-group-item-action"
-              href="/?category={{category.id}}"
-              >{{category.name}}</a
-            >
-            {% endfor %} {% endif %}
-          </ul>
-        </div>
+        {% include 'shared.html' %}
         <div id="products" class="col-lg-8">
           <div class="row mx-auto mt-3">
           {% for auction in auctions %}
             {% if auction.status|is_approved %}
             <div class="card mx-auto mb-3" id="{{ auction.id }}" style="width: 18rem; background-color: #2e2e2d; color: white;">
-              <a href="{% url 'auction_detail' auction.id %}"><img src="{{ auction.product.image_set.first.image.url }}" class="card-img-top mt-3 carousel_img" alt="" /></a>
+              <div id="carouselExample_{{auction.id}}" class="carousel slide">
+                <div class="carousel-inner box">
+                  <div class="carousel-item active mt-2 container">
+                    <img src="{{auction.product.image_set.first.image.url}}" class="d-block w-100 carousel_img" alt="...">
+                  </div>
+                  {% for image in auction.product.image_set.all %}
+                  <div class="carousel-item container mt-2">
+                    <img src="{{image.image.url}}" class="card-img-top mt-3 carousel_img" alt=""  />
+                  </div>
+                  {% empty %}
+                    <!-- no entries -->
+                  {% endfor %}
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample_{{auction.id}}" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample_{{auction.id}}" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
+              </div>
+
               <div class="card-body">
                 <h5 class="card-title">{{ auction.product.title }}</h5>
                 <p class="card-text">

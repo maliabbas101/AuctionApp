@@ -11,7 +11,6 @@
 
 <div class="container">
   <div class="row">
-
     {% if request.user.groups.first|is_buyer %}
     <div class="col-lg-9">
     {% elif request.user.groups.first|is_seller %}
@@ -42,6 +41,11 @@
               <h5>Highest Bid: {{auction.product.starting_price}} $</h5>
               <h5 class="card-text"> Description:</h5><p>{{auction.product.description}}</p>
               <a href="{% url 'home' %}" class="btn btn-outline-danger my-5 rounded-pill p-3">Back</a>
+              {% if auction.status|is_expired %}
+              <div id="winner-text">
+                Winner is: {{winner}} with the bid amount: {{highest_bid}}
+              </div>
+              {% else %}
               <div id="bid-form">
                 <form action="" method="POST" class="btn-block">
                   {% csrf_token %}
@@ -72,21 +76,13 @@
                   />
                 </form>
               </div>
-
-              {% if auction.status|is_expired %}
-
-              <div id="winner-text">
-                Winner is: {{winner}} with the bid amount: {{highest_bid}}
-              </div>
               {% endif %}
-
             </div>
           </div>
         </div>
         <div class="d-flex justify-content-center">
         </div>
     </div>
-
     {% if request.user.groups.first|is_buyer %}
 
     <div class="col-lg-2 ms-5">

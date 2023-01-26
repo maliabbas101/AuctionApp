@@ -14,13 +14,23 @@
     $(function(){
       var today = new Date();
       var date = today.getFullYear()+'-0'+(today.getMonth()+1)+'-'+today.getDate();
-      if( (today.getMinutes()+1)<10){
-      var time = today.getHours() + ":0" + (today.getMinutes()+1) + ":00" ;
+
+      if( (today.getMinutes()+1)<10 && today.getHours()<10 ){
+      var time = "0"+today.getHours() + ":0" + (today.getMinutes()+1) + ":00" ;
+      }
+      else if ((today.getMinutes()+1)<10)
+      {
+        var time = today.getHours() + ":0" + (today.getMinutes()+1) + ":00" ;
+      }
+      else if(today.getHours()<10){
+        console.log('here');
+        var time = "0"+today.getHours() + ":" + (today.getMinutes()+1) + ":00" ;
       }
       else{
         var time = today.getHours() + ":" + (today.getMinutes()+1) + ":00" ;
       }
       var dateTime = date+'T'+time;
+      console.log(dateTime);
       $('#id_start_time').attr('min', dateTime);
       $('#id_end_time').attr('min', dateTime);
 
