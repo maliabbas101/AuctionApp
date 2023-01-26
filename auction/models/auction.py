@@ -7,7 +7,8 @@ import datetime
 import schedule
 import time
 import threading
-
+from django.conf import settings
+from django.core.mail import send_mail
 
 class Auction(models.Model):
     STATUS_EXPIRED = "SE"
